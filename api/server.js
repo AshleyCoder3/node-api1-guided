@@ -58,12 +58,42 @@ server.post('/api/dogs', (req, res) => {
 })
 // [PUT] /api/dogs/:id (U of CRUD, update dog with :id using JSON payload)
 server.put('/api/dogs/:id', (req, res) => {
-    res.json({ message: 'UPDATE/PUT is working' })
+    // res.json({ message: 'UPDATE/PUT is working' })
+    const { id } = req.params
+    const { name, weight } = req.body
+    // console.log(name, weight, id)
+    // res.json({ id, name, weight })
+    Dog.update(id, { name, weight })
+        .then(updatedDog => {
+            if (!updatedDog) {
+                res.status(404).json({ message: 'Not Found!' })
+            } else {
+                res.json(updatedDog) //defaults to status 200
+            }
+        })
+        .catch(err => {
+            //Super sad path
+            res.status(500).json({ message: err.message })
+        })
 })
 
 // [DELETE] /api/dogs/:id (D of CRUD, remove dog with :id)
 server.delete('/api/dogs/:id', (req, res) => {
-    res.json({ message: `deleted dog with id ${req.params.id}` })
+    // res.json({ message: `deleted dog with id ${req.params.id}` })
+    const { id } = req.params
+    Dog.delete(id)
+        // get by id the dog before proceeding with the deletion.(project later)
+        .then(deleted => {
+            if (!deleted) {
+                res.status(404).json({ message: 'Not Found!' })
+            } else {
+                res.json(deleted)
+            }
+        })
+        .catch(err => {
+            //Super sad path
+            res.status(500).json({ message: err.message })
+        })
 })
 // EXPOSING THE SERVER TO OTHER MODULES
 module.exports = server // export default server //ES6
