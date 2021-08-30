@@ -1,20 +1,22 @@
 const shortid = require('shortid')
 
 // single table in fake db
-//dogs table
+//dogs table faking database
 let dogs = [
   { id: shortid.generate(), name: 'Captain', weight: 25 }, // row or record
   { id: shortid.generate(), name: 'Doggo', weight: 13 }, // another record
 ]
 
 module.exports = {
-  async findAll() {
+  async findAll() { //returns promise
     // SELECT * FROM dogs;
+    //return Promise.reject({ message: "ARG DISASTER" }) //testing if function rejects
     return dogs
   },
 
   async findById(id) {
     // SELECT * FROM dogs WHERE id = 1;
+    //throw new ERROR('HORROR!!') //testing if function rejects
     const dog = dogs.find(d => d.id === id)
     return dog
   },
