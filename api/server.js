@@ -38,14 +38,14 @@ server.get('/api/dogs/:id', (req, res) => {
             //Super sad path
             res.status(500).json({ message: err.message })
         })
-
 })
 // [POST] /api/dogs (C of CRUD, create new dog from JSON payload)
 server.post('/api/dogs', (req, res) => {
     //res.json({ message: 'POST new dog working' })
-    const { name, weight } = req.body
+    //const { name, weight } = req.body
+    const newDog = req.body
     // res.json({ name, weight })
-    Dog.create({ name, weight })
+    Dog.create(newDog)
         .then(dog => {
             res.status(201).json(dog)
         })
@@ -53,8 +53,6 @@ server.post('/api/dogs', (req, res) => {
             //Super sad path
             res.status(500).json({ message: err.message })
         })
-
-
 })
 // [PUT] /api/dogs/:id (U of CRUD, update dog with :id using JSON payload)
 server.put('/api/dogs/:id', (req, res) => {
@@ -85,9 +83,9 @@ server.delete('/api/dogs/:id', (req, res) => {
         // get by id the dog before proceeding with the deletion.(project later)
         .then(deleted => {
             if (!deleted) {
-                res.status(404).json({ message: 'Not Found!' })
+                res.status(404).json({ message: `Dog ${id} not real!!` })
             } else {
-                res.json(deleted)
+                res.status(200).json(deleted)
             }
         })
         .catch(err => {
